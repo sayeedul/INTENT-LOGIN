@@ -1,6 +1,8 @@
 package com.sayeedul.intentlogin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -46,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                         if(userName.equalsIgnoreCase("srk") && pwd.equals("srk"))
                                         {
-                                            Intent i = new Intent(MainActivity.this,LoginActivity.class);
-                                            i.putExtra("username",userName);
-                                            startActivity(i);
+                                            openLoginAlert();
                                         }
                                         else
                                         {
@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         break;
 
              case R.id.resetbutton :
-                                        userEdt.setText("");
-                                        pwdEdt.setText("");
+                                        openResetAlert();
                                         break;
 
              case R.id.registerLink :
@@ -69,4 +68,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         break;
          }
     }
+
+
+    private void openLoginAlert()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setTitle("CONFIRM LOGIN ");
+        alertDialogBuilder.setMessage("Are You Sure To LOGIN ? ");
+        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
+
+        alertDialogBuilder.setPositiveButton("YES,Proceed to Login.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(MainActivity.this, "PLease Wait.... ", Toast.LENGTH_SHORT).show();
+
+                String userName = userEdt.getText().toString();
+                Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                i.putExtra("username",userName);
+                startActivity(i);
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO,Stay On This Page.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(MainActivity.this, "Staying On this Page.... ", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    private void openResetAlert()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialogBuilder.setTitle("CONFIRM RESET ");
+        alertDialogBuilder.setMessage("Are You Sure To Reset? ");
+        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
+
+        alertDialogBuilder.setPositiveButton("YES,Reset", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(MainActivity.this, "PLease Wait.... ", Toast.LENGTH_SHORT).show();
+                userEdt.setText("");
+                pwdEdt.setText("");
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("NO,Don't Reset", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Toast.makeText(MainActivity.this, "NOT RESETTING.... ", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+
 }
